@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React Just Like
+          GG WP Learn React Just Like
         </a>
       </header>
     </div>
