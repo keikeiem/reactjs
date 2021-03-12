@@ -10,7 +10,7 @@ class ResultForm extends React.Component {
     }
  
     componentDidUpdate() {
-        console.log('in componentDidUpdate');
+        console.log('in componentDidUpdate: ');
     }
  
     componentWillUnmount() {

@@ -8,22 +8,33 @@ import CellClear from "./CellClear";
 
 class Calculator extends React.Component {
     constructor(props) {
-        super(props);
-        
+        super(props);   
     }
 
-    ClickOperator() {
+    formula = '';
+    innerformula = [];
+    result = '';
+
+    ChangeResult(formula, result) {
+        console.log(formula, result);
+    }
+
+    ClickOperator(value) {
         console.log('click operator: ', arguments);
+        this.formula += value;
+        this.setState(this);
     }
 
     ClickNumber(value) {
         console.log('click number: ', arguments);
         this.formula += value;
-        
+        this.setState(this);
     }
 
-    ClickPoint() {
+    ClickPoint(value) {
         console.log('click point: ', arguments);
+        this.formula += value;
+        this.setState(this);
     }
 
     ClickEqual() {
@@ -37,7 +48,7 @@ class Calculator extends React.Component {
     render() {
         return(
             <div className="calcContainer">
-                <ResultForm formula={this.formula} result={this.result} />
+                <ResultForm formula={this.formula} reuslt={this.result}/>
                 <CellOperator onClick={this.ClickOperator.bind(this)} value="+"/>
                 <CellOperator onClick={this.ClickOperator.bind(this)} value="-"/>
                 <CellOperator onClick={this.ClickOperator.bind(this)} value="*"/>
