@@ -26,7 +26,7 @@ class ResultForm extends React.Component {
                     </span>
                 </div>
                 <div className="resultSection">
-                    <span>
+                    <span title={this.props.result}>
                         {this.props.result}
                     </span>
                 </div>
