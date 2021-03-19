@@ -6,15 +6,15 @@ class ResultForm extends React.Component {
     }
 
     componentDidMount() {
-        console.log('in componentDidMount');
+        //console.log('in componentDidMount');
     }
  
     componentDidUpdate() {
-        console.log('in componentDidUpdate: ');
+        //console.log('in componentDidUpdate: ');
     }
  
     componentWillUnmount() {
-        console.log('in componentWillUnmount');
+        //console.log('in componentWillUnmount');
     }
 
     render() {

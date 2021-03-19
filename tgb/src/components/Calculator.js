@@ -21,6 +21,11 @@ function isInsertOperator(array) {
         return (true);
     }
 
+    if (!this.clearData)
+    {
+        this.clearData = true;
+    }
+
     return (true);
     // 숫자 뒤에는 연산자를 사용한다.
     // . 뒤에 연산자가 나올 경우 .을 제거한다?
@@ -38,19 +43,19 @@ function isInsertNumber(array) {
 }
 
 function isInsertPoint(array) {
-    if (!this.clearData) 
+    if (!this.clearData)
     {
         return (array[(array.length - 1)].type === 'operator');
     }
 
-    if (array[(array.length - 1)].type === 'point')
+    if (array.length && array[(array.length - 1)].type === 'point')
         return (false);
     // 연산자와 연산자 사이에는 소수점이 한 개 이상 있으면 안됨.
     // 연속해서 두 개의 소수점이 나타나면 무시하기
     // 연산자 뒤에 소수점이 나올 경우 0을 채워넣기
-    if (array[(array.length - 1)].type === 'operator')
+    if (array.length && array[(array.length - 1)].type === 'operator')
     {
-        array.push('0');
+        array.push({value: '0', type: 'number'});
         return (true);
     }
     
@@ -95,13 +100,49 @@ function Divide(a, b) {
 
 class Calculator extends React.Component {
     constructor(props) {
-        super(props);   
+        super(props);
     }
 
     formula = '';
     valueStack = [];
     result = '';
     clearData = true;
+    addEvent = false;
+
+    componentDidMount() {
+        let _this = this;
+        if (!this.addEvent)
+        {
+            document.addEventListener('keydown', function(ev) {
+                switch (ev.key) {
+                    // number
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '0': _this.ClickNumber(ev.key); break;
+                    // operator
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/': _this.ClickOperator(ev.key); break;
+                    // point
+                    case '.': _this.ClickPoint(ev.key); break;
+                    // equal
+                    case '=':
+                    case 'Enter': _this.ClickEqual(); break;
+                    // backspace
+                    case 'Backspace': _this.KeyBackspace(); break;
+                }
+            }, true);
+            this.addEvent = true;
+        }
+    }
 
     UpdateFormula() {
         // this.valueStack으로부터 this.formula를 만드는 함수
@@ -115,7 +156,7 @@ class Calculator extends React.Component {
     }
 
     ClickOperator(value) {
-        console.log('click operator: ', arguments);
+        //console.log('click operator: ', arguments);
         if (isInsertOperator.call(this, this.valueStack))
         {
             this.valueStack.push({value: value, type: 'operator'});
@@ -125,7 +166,7 @@ class Calculator extends React.Component {
     }
 
     ClickNumber(value) {
-        console.log('click number: ', arguments);
+        //console.log('click number: ', arguments);
         if (isInsertNumber.call(this, this.valueStack))
         {
             this.valueStack.push({value: value, type: 'number'});
@@ -135,7 +176,7 @@ class Calculator extends React.Component {
     }
 
     ClickPoint(value) {
-        console.log('click point: ', arguments);
+        //console.log('click point: ', arguments);
         if (isInsertPoint.call(this, this.valueStack))
         {
             this.valueStack.push({value: value, type: 'point'});
@@ -150,6 +191,19 @@ class Calculator extends React.Component {
             this.valueStack.push({value: '=', type: 'equal'});
             this.UpdateFormula();
             this.ComputeResult();
+            this.setState(this);
+        }
+    }
+
+    KeyBackspace() {
+        if (this.valueStack.length)
+        {
+            this.valueStack.splice((this.valueStack.length - 1), 1);
+            if (!this.valueStack.length)
+            {
+                this.clearData = true;
+            }
+            this.UpdateFormula();
             this.setState(this);
         }
     }
